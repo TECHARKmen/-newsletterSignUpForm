@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="utf-8" />
+   <title>My Basic Form</title>
+   <style>
+body {
+  justify-content: center;
+  margin: auto;
+}
+
+input {
+  background-color: #fff;
+  display: flex;
+  margin-top: 15px;
+}
+
+   </style>
+</head>
+<body>
+   <h1 style="text-align:center;">Newsletter Sign-Up</h1>
+   <form name="MyForm" method="Post" action="thankyou.html">
+     <div>
+       <input type="text" name="fullname" placeholder="Your name">
+       <input type="text" name="email" placeholder="Your email">
+       <input type="tel" name="phone" placeholder="Your phone number" maxlength="15">
+       <input type="submit" name="submit" value="Submit" onClick="javascript:return validateInputs();">
+     </div>
+   </form>
+   <script>
+     function validateInputs() {
+       var SubmitForm;
+       var FormErrors;
+
+       SubmitForm = true;
+
+       var fullname = new String(document.MyForm.fullname.value);
+       var email = new String(document.MyForm.email.value);
+       var phone = new String(document.MyForm.phone.value);
+
+       if (fullname.length < 1 || email.length < 1 || phone.length < 1) {
+         FormErrors = "All fields are mandatory. Please complete the form.";
+         SubmitForm = false;
+       } else {
+         var filter = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+
+         if (!filter.test(email)) {
+           FormErrors = "Invalid email address. Please correct your email.";
+           SubmitForm = false;
+         }
+
+         // Check that the phone number contains only numbers and dashes
+         var phoneFilter = /^[0-9-]+$/;
+         if (!phoneFilter.test(phone)) {
+           FormErrors = "Invalid phone number. Please use only numbers and dashes.";
+           SubmitForm = false;
+         }
+       }
+
+       if (SubmitForm == false) {
+         alert(FormErrors);
+         return false;
+       } else {
+         // SANITIZE user inputs
+         fullname = fullname.replace(/[^a-z0-9\s\-]/gim, "");
+         fullname = fullname.trim();
+         email = email.replace(/[^a-z0-9_@.-]/gim, "");
+         email = email.trim();
+         // No need to sanitize phone since we're allowing only numbers and dashes
+
+         document.MyForm.submit();
+       }
+     }
+   </script>
+</body>
+</html>
